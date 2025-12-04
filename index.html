@@ -1,721 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Your Name – Personal Site</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jordan Lee · Personal Site</title>
   <style>
-    /* ---------- THEME ---------- */
     :root {
-      --bg: #020617;
-      --bg-soft: #050816;
-      --card: #0b1120;
-      --accent: #818cf8;          /* soft indigo */
-      --accent-soft: rgba(129, 140, 248, 0.16);
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --border-subtle: rgba(148, 163, 184, 0.5);
-      --radius-lg: 18px;
-      --radius-xl: 26px;
-      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.85);
-      --transition-fast: 180ms ease-out;
-      --transition-med: 260ms ease-out;
+      --bg: #050915;
+      --panel: rgba(18, 25, 46, 0.92);
+      --card: rgba(23, 31, 56, 0.9);
+      --accent: #7ab7ff;
+      --accent-2: #74f0ff;
+      --text: #e9eef8;
+      --muted: #9cabc8;
+      --border: rgba(255, 255, 255, 0.08);
+      --glow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      --radius: 22px;
+      --blur: 18px;
+      --transition: 220ms ease;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #020617 0, #000 55%);
-      color: var(--text-main);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      font-family: "Inter", "SF Pro Display", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 18% 12%, rgba(124, 192, 255, 0.16), transparent 32%),
+        radial-gradient(circle at 88% 10%, rgba(88, 164, 255, 0.12), transparent 30%),
+        radial-gradient(circle at 40% 82%, rgba(16, 173, 255, 0.12), transparent 34%),
+        linear-gradient(150deg, #050915 0%, #071024 38%, #040814 100%);
+      color: var(--text);
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Subtle animated background glow */
-    .page-bg {
+    .floating-glow {
       position: fixed;
       inset: 0;
-      z-index: -1;
-      background:
-        radial-gradient(circle at 20% 0%, rgba(129, 140, 248, 0.18), transparent 55%),
-        radial-gradient(circle at 80% 100%, rgba(56, 189, 248, 0.12), transparent 55%);
-      filter: blur(40px);
-      opacity: 0.8;
-      animation: drift 26s linear infinite alternate;
       pointer-events: none;
+      background: radial-gradient(circle at 28% 28%, rgba(122, 183, 255, 0.18), transparent 40%),
+        radial-gradient(circle at 78% 52%, rgba(116, 240, 255, 0.12), transparent 38%);
+      filter: blur(50px);
+      opacity: 0.75;
+      animation: drift 26s ease-in-out infinite alternate;
+      z-index: 0;
     }
 
     @keyframes drift {
       from { transform: translate3d(-10px, 0, 0) scale(1); }
-      to   { transform: translate3d(10px, -6px, 0) scale(1.03); }
+      to { transform: translate3d(12px, -12px, 0) scale(1.02); }
     }
 
     .page {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 32px 16px 40px;
-    }
-
-    .shell {
-      width: 100%;
-      max-width: 960px;
-      border-radius: 32px;
-      padding: 22px 22px 24px;
-      background:
-        linear-gradient(145deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.98));
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(22px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .shell::before {
-      content: "";
-      position: absolute;
-      inset: -30%;
-      background:
-        radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.22), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(30, 64, 175, 0.28), transparent 60%);
-      mix-blend-mode: soft-light;
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    .shell-inner {
       position: relative;
       z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 20px 72px;
     }
-
-    /* ---------- HEADER ---------- */
 
     header {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
       gap: 16px;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
-    .branding {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 30% 20%, #f9fafb, #e5e7eb 35%, #818cf8 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #020617;
+    .mark {
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
       font-weight: 700;
-      font-size: 18px;
-      box-shadow: 0 0 18px rgba(129, 140, 248, 0.7);
-      transition: transform var(--transition-med), box-shadow var(--transition-med);
+      font-size: 12px;
     }
 
-    .logo-mark:hover {
-      transform: translateY(-1px) scale(1.03);
-      box-shadow: 0 0 22px rgba(129, 140, 248, 0.9);
-    }
+    nav { display: flex; gap: 10px; flex-wrap: wrap; }
 
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      font-size: 14px;
-    }
-
-    .logo-text span:first-child {
-      font-weight: 600;
-    }
-
-    .logo-text span:last-child {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-    }
-
-    .status-pill {
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.65);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.9);
+    .pill {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
+      gap: 8px;
+      padding: 10px 14px;
       border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
-      animation: pulse 2.4s ease-in-out infinite;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50%      { transform: scale(1.1); opacity: 0.6; }
+    .pill:hover {
+      transform: translateY(-2px);
+      border-color: rgba(122, 183, 255, 0.4);
+      background: rgba(122, 183, 255, 0.08);
     }
 
-    @media (max-width: 640px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    /* ---------- LAYOUT ---------- */
-
-    main {
+    .hero {
+      background: linear-gradient(140deg, rgba(23, 31, 56, 0.92), rgba(19, 30, 58, 0.86));
+      border: 1px solid var(--border);
+      box-shadow: var(--glow);
+      border-radius: 30px;
+      padding: 30px;
       display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
-      gap: 20px;
-    }
-
-    @media (max-width: 880px) {
-      main {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .panel {
-      border-radius: var(--radius-xl);
-      background: radial-gradient(circle at top, #020617 0, #020617 70%);
-      border: 1px solid var(--border-subtle);
-      padding: 18px 18px 20px;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: center;
+      backdrop-filter: blur(var(--blur));
       position: relative;
       overflow: hidden;
-      transition:
-        transform var(--transition-med),
-        box-shadow var(--transition-med),
-        border-color var(--transition-med),
-        background var(--transition-med);
     }
 
-    .panel:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.95);
-      border-color: rgba(129, 140, 248, 0.75);
-      background: radial-gradient(circle at top, #020617 0, #020617 80%);
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 22% 28%, rgba(255, 255, 255, 0.08), transparent 40%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
     }
 
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
+    .hero:hover::after { opacity: 1; }
+
+    .portrait-wrap {
+      width: 132px;
+      height: 132px;
+      padding: 4px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(122, 183, 255, 0.2), rgba(116, 240, 255, 0.16));
+      display: grid;
+      place-items: center;
+      position: relative;
     }
 
-    .panel-title {
+    .portrait {
+      width: 100%;
+      height: 100%;
+      border-radius: 28px;
+      background: url("https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80") center/cover;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+      transition: transform var(--transition);
+      filter: saturate(0.94);
+    }
+
+    .portrait:hover { transform: scale(1.012); }
+
+    .hero-content { display: grid; gap: 12px; }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--muted);
       font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-muted);
     }
 
-    .panel-caption {
-      font-size: 11px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
+    h1 { font-size: 34px; letter-spacing: -0.02em; }
+    .lead { color: var(--muted); max-width: 640px; line-height: 1.7; }
 
-    /* ---------- HERO ---------- */
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 10px 0 14px;
-    }
-
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
-      padding: 4px 10px;
+      background: rgba(122, 183, 255, 0.15);
+      color: #dcedff;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      font-size: 11px;
-      color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.92);
-      transition: background var(--transition-fast), color var(--transition-fast),
-        border-color var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .chip:hover {
-      background: var(--accent-soft);
-      color: #e5e7eb;
-      border-color: rgba(129, 140, 248, 0.9);
-      transform: translateY(-1px);
-    }
-
-    .hero-heading {
-      font-size: clamp(26px, 4vw, 32px);
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      margin-bottom: 6px;
-    }
-
-    .hero-heading span {
-      color: var(--accent);
-    }
-
-    .hero-sub {
       font-size: 13px;
-      color: var(--text-muted);
-      max-width: 460px;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+    .chip:hover { transform: translateY(-2px); border-color: rgba(122, 183, 255, 0.4); }
+
+    .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+    .cta { font-weight: 600; }
+    .ghost { background: rgba(255, 255, 255, 0.03); color: var(--muted); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-top: 20px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--glow);
+      backdrop-filter: blur(var(--blur));
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
     }
 
-    .sections {
-      margin-top: 16px;
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(122, 183, 255, 0.38);
+      background: rgba(23, 31, 56, 0.96);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.05), transparent 46%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card h2 { font-size: 18px; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .muted { color: var(--muted); font-size: 14px; }
+
+    .list { display: grid; gap: 12px; margin-top: 14px; }
+    .item {
       display: grid;
-      gap: 18px;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.02);
+      transition: border-color var(--transition), transform var(--transition);
     }
+    .item:hover { border-color: rgba(122, 183, 255, 0.35); transform: translateY(-2px); }
 
-    .section-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 720px) {
-      .two-col {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .text-muted {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    /* ---------- TIMELINE ---------- */
-
-    .timeline {
-      border-left: 1px solid rgba(148, 163, 184, 0.6);
-      padding-left: 14px;
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(145deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 0 6px rgba(122, 183, 255, 0.08);
       margin-top: 4px;
     }
 
-    .timeline-item {
+    .verse {
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(122, 183, 255, 0.08), rgba(12, 116, 255, 0.08));
+      border: 1px solid rgba(255, 255, 255, 0.12);
       position: relative;
-      padding-bottom: 10px;
-      margin-bottom: 4px;
+      overflow: hidden;
     }
 
-    .timeline-item::before {
+    .verse::after {
       content: "";
       position: absolute;
-      left: -15px;
-      top: 5px;
-      width: 9px;
-      height: 9px;
+      inset: -28% 62% auto -36%;
+      height: 260px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 50%);
+      transform: rotate(-6deg);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    blockquote { font-size: 18px; line-height: 1.7; color: #eef3ff; }
+    .verse small { color: var(--muted); }
+
+    .contact { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .tag {
+      padding: 6px 10px;
       border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 16px rgba(129, 140, 248, 0.9);
-    }
-
-    .timeline-meta {
-      font-size: 11px;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      margin-bottom: 3px;
-    }
-
-    .timeline-role {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .timeline-body {
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      color: var(--muted);
       font-size: 12px;
-      color: var(--text-muted);
+      letter-spacing: 0.01em;
     }
-
-    /* ---------- VERSE / RIGHT COLUMN ---------- */
-
-    .verse-card {
-      position: relative;
-      padding: 14px 14px 14px;
-      border-radius: var(--radius-lg);
-      background:
-        radial-gradient(circle at top left, rgba(248, 250, 252, 0.05), transparent 60%),
-        linear-gradient(145deg, #020617, #020617);
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.95);
-      transition:
-        transform var(--transition-med),
-        box-shadow var(--transition-med),
-        border-color var(--transition-med),
-        background var(--transition-med);
-    }
-
-    .verse-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 46px rgba(15, 23, 42, 1);
-      border-color: rgba(129, 140, 248, 0.95);
-      background:
-        radial-gradient(circle at top, rgba(129, 140, 248, 0.16), transparent 60%),
-        linear-gradient(145deg, #020617, #020617);
-    }
-
-    .verse-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: #cbd5f5;
-      opacity: 0.9;
-    }
-
-    .verse-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #f97316, #818cf8);
-      box-shadow: 0 0 18px rgba(129, 140, 248, 0.85);
-    }
-
-    .verse-text {
-      margin: 9px 0 6px;
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    .verse-ref {
-      font-size: 12px;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    .verse-note {
-      margin-top: 8px;
-      font-size: 12px;
-      color: #9ca3af;
-    }
-
-    .grid-cards {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 640px) {
-      .grid-cards {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .mini-card {
-      border-radius: 16px;
-      padding: 9px 10px 10px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.75);
-      transition:
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast),
-        border-color var(--transition-fast),
-        background var(--transition-fast);
-    }
-
-    .mini-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.9);
-      border-color: rgba(129, 140, 248, 0.9);
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), #020617);
-    }
-
-    .mini-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #9ca3af;
-      margin-bottom: 4px;
-    }
-
-    .mini-main {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .mini-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 1px;
-    }
-
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .badge {
-      font-size: 11px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      color: #e5e7eb;
-      background: rgba(15, 23, 42, 0.96);
-      text-decoration: none;
-      transition:
-        background var(--transition-fast),
-        color var(--transition-fast),
-        border-color var(--transition-fast),
-        transform var(--transition-fast);
-    }
-
-    .badge:hover {
-      background: var(--accent-soft);
-      border-color: rgba(129, 140, 248, 0.95);
-      transform: translateY(-1px);
-    }
-
-    /* ---------- FOOTER ---------- */
 
     footer {
-      margin-top: 22px;
-      font-size: 11px;
-      color: #6b7280;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      margin-top: 34px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .footer-links {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: #e5e7eb;
-      text-decoration: none;
-      border-bottom: 1px dashed rgba(148, 163, 184, 0.7);
-      transition: border-color var(--transition-fast);
-    }
-
-    .footer-links a:hover {
-      border-bottom-style: solid;
-      border-color: rgba(129, 140, 248, 0.95);
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; }
+      .portrait-wrap { justify-self: start; }
+      header { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
-  <div class="page-bg"></div>
-
+  <div class="floating-glow"></div>
   <div class="page">
-    <div class="shell">
-      <div class="shell-inner">
-        <header>
-          <div class="branding">
-            <div class="logo-mark">Y</div>
-            <div class="logo-text">
-              <span>Your Name</span>
-              <span>personal site</span>
-            </div>
-          </div>
-          <div class="status-pill">
-            <span class="status-dot"></span>
-            <span>quietly building & learning</span>
-          </div>
-        </header>
-
-        <main>
-          <!-- LEFT COLUMN -->
-          <section class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Who I Am</div>
-              <div class="panel-caption">Overview</div>
-            </div>
-
-            <div class="chips">
-              <span class="chip">Business & Analytics</span>
-              <span class="chip">Curious mind</span>
-              <span class="chip">Low-noise, high-signal</span>
-            </div>
-
-            <h1 class="hero-heading">
-              Hi, I’m <span>Your Name</span>.
-            </h1>
-            <p class="hero-sub">
-              A short, honest description of who you are right now:
-              what you’re studying, what you care about, and the kind of
-              work or ideas that pull you in.
-            </p>
-
-            <div class="sections">
-              <div>
-                <h2 class="section-title">Right Now</h2>
-                <div class="two-col">
-                  <p class="text-muted">
-                    Use this space to describe your current season:
-                    studying, building small projects, learning to think more
-                    clearly, and becoming more disciplined in how you use
-                    your time and attention.
-                  </p>
-                  <div>
-                    <p class="text-muted">
-                      • Learning: accounting, statistics, and how data connects to real decisions.<br>
-                      • Exploring: technology, personal finance, and systems that make life
-                      a little less chaotic.<br>
-                      • Growing: in faith, patience, and consistency.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h2 class="section-title">Timeline of Growth</h2>
-                <div class="timeline">
-                  <div class="timeline-item">
-                    <div class="timeline-meta">2025 · Deepening</div>
-                    <div class="timeline-role">Business & analytical thinking</div>
-                    <div class="timeline-body">
-                      Studying business, sharpening quantitative skills, and
-                      paying attention to how real organizations make choices.
-                    </div>
-                  </div>
-                  <div class="timeline-item">
-                    <div class="timeline-meta">2024 · Exploring</div>
-                    <div class="timeline-role">Tech, finance & personal systems</div>
-                    <div class="timeline-body">
-                      Experimented with tools, workflows, and habits that remove friction and
-                      make room for focused work.
-                    </div>
-                  </div>
-                  <div class="timeline-item">
-                    <div class="timeline-meta">Earlier · Foundations</div>
-                    <div class="timeline-role">Discipline, curiosity & faith</div>
-                    <div class="timeline-body">
-                      Learning to ask better questions, surround myself with good inputs,
-                      and build a life rooted in something deeper than notifications.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- RIGHT COLUMN -->
-          <section class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Anchored By</div>
-              <div class="panel-caption">Scripture</div>
-            </div>
-
-            <div class="verse-card">
-              <div class="verse-tag">
-                <span class="verse-dot"></span>
-                <span>Verse for this season</span>
-              </div>
-              <p class="verse-text">
-                “Therefore do not be anxious about tomorrow, for tomorrow
-                will be anxious for itself. Sufficient for the day is its own trouble.”
-              </p>
-              <p class="verse-ref">Matthew 6:34 (ESV)</p>
-              <p class="verse-note">
-                In a world that always pulls my attention forward, this verse reminds me
-                to live one day at a time, do today’s work well, and let God hold the rest.
-              </p>
-            </div>
-
-            <div class="sections">
-              <div>
-                <h2 class="section-title">What I’m Focused On</h2>
-                <div class="grid-cards">
-                  <div class="mini-card">
-                    <div class="mini-label">Studying</div>
-                    <div class="mini-main">Business & Analytics</div>
-                    <div class="mini-sub">
-                      Building a foundation in accounting, statistics, and decision-making.
-                    </div>
-                  </div>
-                  <div class="mini-card">
-                    <div class="mini-label">Building</div>
-                    <div class="mini-main">Quiet personal projects</div>
-                    <div class="mini-sub">
-                      Small experiments in tech and finance that don’t need an audience.
-                    </div>
-                  </div>
-                  <div class="mini-card">
-                    <div class="mini-label">Growing In</div>
-                    <div class="mini-main">Discipline & attention</div>
-                    <div class="mini-sub">
-                      Learning to focus deeper, say no more often, and be present.
-                    </div>
-                  </div>
-                  <div class="mini-card">
-                    <div class="mini-label">Open To</div>
-                    <div class="mini-main">Thoughtful conversations</div>
-                    <div class="mini-sub">
-                      People who care about ideas, character, and doing work that matters.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h2 class="section-title">Contact</h2>
-                <p class="text-muted">
-                  If something here resonates and you’d like to reach out, email works best.
-                  I keep my online footprint small on purpose.
-                </p>
-                <div class="badge-row">
-                  <a class="badge" href="mailto:you@yourdomain.com">
-                    you@yourdomain.com
-                  </a>
-                  <span class="badge">
-                    Request full résumé via email
-                  </span>
-                </div>
-              </div>
-            </div>
-          </section>
-        </main>
-
-        <footer>
-          <div>Low-noise corner of the internet.</div>
-          <div class="footer-links">
-            <a href="#top">Back to top</a>
-          </div>
-        </footer>
+    <header>
+      <div>
+        <div class="mark">Jordan Lee — Product Strategist & Builder</div>
+        <div class="tags">
+          <span class="tag">Austin · CST</span>
+          <span class="tag">Reply-friendly</span>
+          <span class="tag">Operating with calm focus</span>
+        </div>
       </div>
+      <nav>
+        <a class="pill" href="mailto:jordan@lee.studio">Email</a>
+        <a class="pill" href="https://cal.com" target="_blank" rel="noreferrer">Book a short intro</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="portrait-wrap">
+        <div class="portrait" aria-label="Portrait of Jordan Lee"></div>
+      </div>
+      <div class="hero-content">
+        <div class="eyebrow">Personal site</div>
+        <h1>Creating thoughtful products with quiet, precise execution.</h1>
+        <p class="lead">
+          I help teams ship intentional systems—lean processes, evidence-led choices, and experiences that stay human.
+          Outside work I invest in habits that keep me steady, curious, and anchored.
+        </p>
+        <div class="chips">
+          <span class="chip">Product thinking</span>
+          <span class="chip">Strategy & analytics</span>
+          <span class="chip">Habit design</span>
+          <span class="chip">Faith & service</span>
+        </div>
+        <div class="cta-row">
+          <a class="pill cta" href="https://cal.com" target="_blank" rel="noreferrer">Schedule an intro</a>
+          <a class="pill ghost" href="mailto:jordan@lee.studio">Send a note</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid" style="margin-top: 20px;">
+      <article class="card">
+        <h2>Current Goals</h2>
+        <p class="muted">Quiet ambitions guiding my weeks.</p>
+        <div class="list">
+          <div class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div>
+              <strong>Lead with clarity</strong><br />
+              <span class="muted">Define crisp product bets, align teams early, and measure what matters.</span>
+            </div>
+          </div>
+          <div class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div>
+              <strong>Stay academically sharp</strong><br />
+              <span class="muted">Weekly study sprints in finance, decision science, and behavioral systems.</span>
+            </div>
+          </div>
+          <div class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div>
+              <strong>Build personal tools</strong><br />
+              <span class="muted">Automations and dashboards that protect attention and keep signals honest.</span>
+            </div>
+          </div>
+          <div class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div>
+              <strong>Invest in people</strong><br />
+              <span class="muted">Show up for family, church, and friends with time, presence, and encouragement.</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Anchored by Scripture</h2>
+        <p class="muted">A verse I keep close this month.</p>
+        <div class="verse">
+          <blockquote>
+            “You keep him in perfect peace whose mind is stayed on you, because he trusts in you.”
+          </blockquote>
+          <small>Isaiah 26:3 (ESV)</small>
+          <p class="muted">
+            A steady reminder to hold my focus on what’s eternal, not urgent. It keeps my work grounded and my days
+            unhurried.
+          </p>
+        </div>
+      </article>
     </div>
+
+    <div class="grid" style="margin-top: 12px;">
+      <article class="card">
+        <h2>How I Work</h2>
+        <p class="muted">Disciplines that shape my craft.</p>
+        <div class="list">
+          <div class="item">
+            <span class="dot"></span>
+            <div>
+              <strong>Systems thinking</strong><br />
+              <span class="muted">Zooming out to find leverage, then zooming in to design calm, reliable flows.</span>
+            </div>
+          </div>
+          <div class="item">
+            <span class="dot"></span>
+            <div>
+              <strong>Writing-first</strong><br />
+              <span class="muted">Concise docs and decision logs keep teams aligned without meeting sprawl.</span>
+            </div>
+          </div>
+          <div class="item">
+            <span class="dot"></span>
+            <div>
+              <strong>Proof over polish</strong><br />
+              <span class="muted">Prototype, measure, and iterate quickly—then refine once the signal is clear.</span>
+            </div>
+          </div>
+          <div class="item">
+            <span class="dot"></span>
+            <div>
+              <strong>Presence first</strong><br />
+              <span class="muted">Protect margin for people and prayer so delivery stays anchored and sustainable.</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Contact</h2>
+        <p class="muted">I keep a low online footprint. Email is best.</p>
+        <div class="contact">
+          <a class="pill" href="mailto:jordan@lee.studio">jordan@lee.studio</a>
+          <a class="pill" href="https://cal.com" target="_blank" rel="noreferrer">Request a short intro call</a>
+          <span class="pill" aria-label="Location">Austin · CST</span>
+        </div>
+      </article>
+    </div>
+
+    <footer>
+      Crafted with care, low noise, and intentional defaults.
+    </footer>
   </div>
 </body>
 </html>
