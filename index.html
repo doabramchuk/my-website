@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Name – Personal Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* ---------- THEME ---------- */
+    :root {
+      --bg: #020617;
+      --bg-soft: #050816;
+      --card: #0b1120;
+      --accent: #818cf8;          /* soft indigo */
+      --accent-soft: rgba(129, 140, 248, 0.16);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.5);
+      --radius-lg: 18px;
+      --radius-xl: 26px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.85);
+      --transition-fast: 180ms ease-out;
+      --transition-med: 260ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #000 55%);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* Subtle animated background glow */
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(129, 140, 248, 0.18), transparent 55%),
+        radial-gradient(circle at 80% 100%, rgba(56, 189, 248, 0.12), transparent 55%);
+      filter: blur(40px);
+      opacity: 0.8;
+      animation: drift 26s linear infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(-10px, 0, 0) scale(1); }
+      to   { transform: translate3d(10px, -6px, 0) scale(1.03); }
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 40px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 960px;
+      border-radius: 32px;
+      padding: 22px 22px 24px;
+      background:
+        linear-gradient(145deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(22px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background:
+        radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.22), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(30, 64, 175, 0.28), transparent 60%);
+      mix-blend-mode: soft-light;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .shell-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---------- HEADER ---------- */
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .branding {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 20%, #f9fafb, #e5e7eb 35%, #818cf8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #020617;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 0 18px rgba(129, 140, 248, 0.7);
+      transition: transform var(--transition-med), box-shadow var(--transition-med);
+    }
+
+    .logo-mark:hover {
+      transform: translateY(-1px) scale(1.03);
+      box-shadow: 0 0 22px rgba(129, 140, 248, 0.9);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+    }
+
+    .logo-text span:first-child {
+      font-weight: 600;
+    }
+
+    .logo-text span:last-child {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .status-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.65);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%      { transform: scale(1.1); opacity: 0.6; }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* ---------- LAYOUT ---------- */
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 880px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top, #020617 0, #020617 70%);
+      border: 1px solid var(--border-subtle);
+      padding: 18px 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform var(--transition-med),
+        box-shadow var(--transition-med),
+        border-color var(--transition-med),
+        background var(--transition-med);
+    }
+
+    .panel:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.95);
+      border-color: rgba(129, 140, 248, 0.75);
+      background: radial-gradient(circle at top, #020617 0, #020617 80%);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .panel-title {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .panel-caption {
+      font-size: 11px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    /* ---------- HERO ---------- */
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.92);
+      transition: background var(--transition-fast), color var(--transition-fast),
+        border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .chip:hover {
+      background: var(--accent-soft);
+      color: #e5e7eb;
+      border-color: rgba(129, 140, 248, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .hero-heading {
+      font-size: clamp(26px, 4vw, 32px);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+
+    .hero-heading span {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 460px;
+    }
+
+    .sections {
+      margin-top: 16px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 720px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .text-muted {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ---------- TIMELINE ---------- */
+
+    .timeline {
+      border-left: 1px solid rgba(148, 163, 184, 0.6);
+      padding-left: 14px;
+      margin-top: 4px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 10px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -15px;
+      top: 5px;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(129, 140, 248, 0.9);
+    }
+
+    .timeline-meta {
+      font-size: 11px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 3px;
+    }
+
+    .timeline-role {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .timeline-body {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ---------- VERSE / RIGHT COLUMN ---------- */
+
+    .verse-card {
+      position: relative;
+      padding: 14px 14px 14px;
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at top left, rgba(248, 250, 252, 0.05), transparent 60%),
+        linear-gradient(145deg, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.95);
+      transition:
+        transform var(--transition-med),
+        box-shadow var(--transition-med),
+        border-color var(--transition-med),
+        background var(--transition-med);
+    }
+
+    .verse-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 46px rgba(15, 23, 42, 1);
+      border-color: rgba(129, 140, 248, 0.95);
+      background:
+        radial-gradient(circle at top, rgba(129, 140, 248, 0.16), transparent 60%),
+        linear-gradient(145deg, #020617, #020617);
+    }
+
+    .verse-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #cbd5f5;
+      opacity: 0.9;
+    }
+
+    .verse-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #f97316, #818cf8);
+      box-shadow: 0 0 18px rgba(129, 140, 248, 0.85);
+    }
+
+    .verse-text {
+      margin: 9px 0 6px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .verse-ref {
+      font-size: 12px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .verse-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .grid-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mini-card {
+      border-radius: 16px;
+      padding: 9px 10px 10px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.75);
+      transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast),
+        background var(--transition-fast);
+    }
+
+    .mini-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.9);
+      border-color: rgba(129, 140, 248, 0.9);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), #020617);
+    }
+
+    .mini-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .mini-main {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .mini-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.96);
+      text-decoration: none;
+      transition:
+        background var(--transition-fast),
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        transform var(--transition-fast);
+    }
+
+    .badge:hover {
+      background: var(--accent-soft);
+      border-color: rgba(129, 140, 248, 0.95);
+      transform: translateY(-1px);
+    }
+
+    /* ---------- FOOTER ---------- */
+
+    footer {
+      margin-top: 22px;
+      font-size: 11px;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #e5e7eb;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.7);
+      transition: border-color var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+      border-bottom-style: solid;
+      border-color: rgba(129, 140, 248, 0.95);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <div class="page">
+    <div class="shell">
+      <div class="shell-inner">
+        <header>
+          <div class="branding">
+            <div class="logo-mark">Y</div>
+            <div class="logo-text">
+              <span>Your Name</span>
+              <span>personal site</span>
+            </div>
+          </div>
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            <span>quietly building & learning</span>
+          </div>
+        </header>
+
+        <main>
+          <!-- LEFT COLUMN -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Who I Am</div>
+              <div class="panel-caption">Overview</div>
+            </div>
+
+            <div class="chips">
+              <span class="chip">Business & Analytics</span>
+              <span class="chip">Curious mind</span>
+              <span class="chip">Low-noise, high-signal</span>
+            </div>
+
+            <h1 class="hero-heading">
+              Hi, I’m <span>Your Name</span>.
+            </h1>
+            <p class="hero-sub">
+              A short, honest description of who you are right now:
+              what you’re studying, what you care about, and the kind of
+              work or ideas that pull you in.
+            </p>
+
+            <div class="sections">
+              <div>
+                <h2 class="section-title">Right Now</h2>
+                <div class="two-col">
+                  <p class="text-muted">
+                    Use this space to describe your current season:
+                    studying, building small projects, learning to think more
+                    clearly, and becoming more disciplined in how you use
+                    your time and attention.
+                  </p>
+                  <div>
+                    <p class="text-muted">
+                      • Learning: accounting, statistics, and how data connects to real decisions.<br>
+                      • Exploring: technology, personal finance, and systems that make life
+                      a little less chaotic.<br>
+                      • Growing: in faith, patience, and consistency.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h2 class="section-title">Timeline of Growth</h2>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-meta">2025 · Deepening</div>
+                    <div class="timeline-role">Business & analytical thinking</div>
+                    <div class="timeline-body">
+                      Studying business, sharpening quantitative skills, and
+                      paying attention to how real organizations make choices.
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-meta">2024 · Exploring</div>
+                    <div class="timeline-role">Tech, finance & personal systems</div>
+                    <div class="timeline-body">
+                      Experimented with tools, workflows, and habits that remove friction and
+                      make room for focused work.
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-meta">Earlier · Foundations</div>
+                    <div class="timeline-role">Discipline, curiosity & faith</div>
+                    <div class="timeline-body">
+                      Learning to ask better questions, surround myself with good inputs,
+                      and build a life rooted in something deeper than notifications.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RIGHT COLUMN -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Anchored By</div>
+              <div class="panel-caption">Scripture</div>
+            </div>
+
+            <div class="verse-card">
+              <div class="verse-tag">
+                <span class="verse-dot"></span>
+                <span>Verse for this season</span>
+              </div>
+              <p class="verse-text">
+                “Therefore do not be anxious about tomorrow, for tomorrow
+                will be anxious for itself. Sufficient for the day is its own trouble.”
+              </p>
+              <p class="verse-ref">Matthew 6:34 (ESV)</p>
+              <p class="verse-note">
+                In a world that always pulls my attention forward, this verse reminds me
+                to live one day at a time, do today’s work well, and let God hold the rest.
+              </p>
+            </div>
+
+            <div class="sections">
+              <div>
+                <h2 class="section-title">What I’m Focused On</h2>
+                <div class="grid-cards">
+                  <div class="mini-card">
+                    <div class="mini-label">Studying</div>
+                    <div class="mini-main">Business & Analytics</div>
+                    <div class="mini-sub">
+                      Building a foundation in accounting, statistics, and decision-making.
+                    </div>
+                  </div>
+                  <div class="mini-card">
+                    <div class="mini-label">Building</div>
+                    <div class="mini-main">Quiet personal projects</div>
+                    <div class="mini-sub">
+                      Small experiments in tech and finance that don’t need an audience.
+                    </div>
+                  </div>
+                  <div class="mini-card">
+                    <div class="mini-label">Growing In</div>
+                    <div class="mini-main">Discipline & attention</div>
+                    <div class="mini-sub">
+                      Learning to focus deeper, say no more often, and be present.
+                    </div>
+                  </div>
+                  <div class="mini-card">
+                    <div class="mini-label">Open To</div>
+                    <div class="mini-main">Thoughtful conversations</div>
+                    <div class="mini-sub">
+                      People who care about ideas, character, and doing work that matters.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h2 class="section-title">Contact</h2>
+                <p class="text-muted">
+                  If something here resonates and you’d like to reach out, email works best.
+                  I keep my online footprint small on purpose.
+                </p>
+                <div class="badge-row">
+                  <a class="badge" href="mailto:you@yourdomain.com">
+                    you@yourdomain.com
+                  </a>
+                  <span class="badge">
+                    Request full résumé via email
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer>
+          <div>Low-noise corner of the internet.</div>
+          <div class="footer-links">
+            <a href="#top">Back to top</a>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
