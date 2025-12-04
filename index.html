@@ -1,431 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jordan Lee · Personal Site</title>
+  <meta charset="UTF-8">
+  <title>David Abramchuk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* --------- Base --------- */
     :root {
-      --bg: #050915;
-      --panel: rgba(18, 25, 46, 0.92);
-      --card: rgba(23, 31, 56, 0.9);
-      --accent: #7ab7ff;
-      --accent-2: #74f0ff;
-      --text: #e9eef8;
-      --muted: #9cabc8;
-      --border: rgba(255, 255, 255, 0.08);
-      --glow: 0 20px 60px rgba(0, 0, 0, 0.5);
-      --radius: 22px;
-      --blur: 18px;
-      --transition: 220ms ease;
+      --bg: #f5f5f7;
+      --bg-soft: #ffffff;
+      --border-subtle: #e5e5ea;
+      --text-main: #111111;
+      --text-muted: #6e6e73;
+      --accent: #0071e3; /* Apple-ish blue */
+      --radius-lg: 24px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.06);
+      --max-width: 960px;
+      --transition: 220ms ease-out;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      font-family: "Inter", "SF Pro Display", system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at 18% 12%, rgba(124, 192, 255, 0.16), transparent 32%),
-        radial-gradient(circle at 88% 10%, rgba(88, 164, 255, 0.12), transparent 30%),
-        radial-gradient(circle at 40% 82%, rgba(16, 173, 255, 0.12), transparent 34%),
-        linear-gradient(150deg, #050915 0%, #071024 38%, #040814 100%);
-      color: var(--text);
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   system-ui, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #ffffff 0, #f5f5f7 55%);
+      color: var(--text-main);
       -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
     }
 
-    .floating-glow {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(circle at 28% 28%, rgba(122, 183, 255, 0.18), transparent 40%),
-        radial-gradient(circle at 78% 52%, rgba(116, 240, 255, 0.12), transparent 38%);
-      filter: blur(50px);
-      opacity: 0.75;
-      animation: drift 26s ease-in-out infinite alternate;
-      z-index: 0;
+    a {
+      color: var(--accent);
+      text-decoration: none;
     }
 
-    @keyframes drift {
-      from { transform: translate3d(-10px, 0, 0) scale(1); }
-      to { transform: translate3d(12px, -12px, 0) scale(1.02); }
+    a:hover {
+      text-decoration: underline;
     }
+
+    /* --------- Layout --------- */
 
     .page {
-      position: relative;
-      z-index: 1;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 48px 20px 72px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 40px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: var(--max-width);
     }
 
     header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 28px;
+      align-items: center;
+      padding: 12px 18px;
+      margin-bottom: 24px;
     }
 
-    .mark {
-      letter-spacing: 0.1em;
+    .brand {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .nav a {
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width var(--transition);
+    }
+
+    .nav a:hover::after {
+      width: 100%;
+    }
+
+    main {
+      background: var(--bg-soft);
+      border-radius: 32px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+
+    /* --------- Hero --------- */
+
+    .hero {
+      padding: 40px 32px 32px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 28px 20px;
+      }
+    }
+
+    .eyebrow {
+      font-size: 13px;
       text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 12px;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
     }
 
-    nav { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
 
-    .pill {
+    .hero-title span {
+      background: linear-gradient(90deg, #111, #3a3a3c);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 540px;
+    }
+
+    .hero-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 28px;
+      align-items: flex-end;
+    }
+
+    .hero-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 340px;
+    }
+
+    .hero-pill {
+      font-size: 13px;
+      color: var(--text-muted);
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f5f5f7;
+    }
+
+    .hero-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #34c759;
+    }
+
+    /* --------- Sections --------- */
+
+    section {
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background-color var(--transition), transform var(--transition);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    section:hover {
+      background-color: #fafafa;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 640px) {
+      section {
+        padding: 24px 20px;
+      }
+    }
+
+    .section-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
+      gap: 24px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 800px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    ul.clean-list {
+      list-style: none;
+      padding-left: 0;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    ul.clean-list li + li {
+      margin-top: 6px;
+    }
+
+    .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    /* --------- Verse strip --------- */
+
+    .verse-strip {
+      background: #f5f5f7;
+      border-radius: 0;
+    }
+
+    .verse-ref {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .verse-text {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .verse-note {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+
+    /* --------- Principles --------- */
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .principle {
+      padding-top: 6px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .principle-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .principle-text {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* --------- Timeline --------- */
+
+    .timeline {
+      margin-top: 14px;
+      border-left: 1px solid var(--border-subtle);
+      padding-left: 16px;
+    }
+
+    .timeline-item {
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -17px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .timeline-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 3px;
+    }
+
+    .timeline-heading {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .timeline-body {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* --------- Contact --------- */
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .contact-row p {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 420px;
+    }
+
+    .contact-chip {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 14px;
+      padding: 8px 14px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      color: var(--text);
-      text-decoration: none;
-      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+      border: 1px solid var(--border-subtle);
+      font-size: 14px;
+      background: #f5f5f7;
+      transition: background-color var(--transition), box-shadow var(--transition),
+                  transform var(--transition);
     }
 
-    .pill:hover {
-      transform: translateY(-2px);
-      border-color: rgba(122, 183, 255, 0.4);
-      background: rgba(122, 183, 255, 0.08);
+    .contact-chip:hover {
+      background: #ffffff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
     }
 
-    .hero {
-      background: linear-gradient(140deg, rgba(23, 31, 56, 0.92), rgba(19, 30, 58, 0.86));
-      border: 1px solid var(--border);
-      box-shadow: var(--glow);
-      border-radius: 30px;
-      padding: 30px;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 24px;
-      align-items: center;
-      backdrop-filter: blur(var(--blur));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 22% 28%, rgba(255, 255, 255, 0.08), transparent 40%);
-      opacity: 0;
-      transition: opacity var(--transition);
-      pointer-events: none;
-    }
-
-    .hero:hover::after { opacity: 1; }
-
-    .portrait-wrap {
-      width: 132px;
-      height: 132px;
-      padding: 4px;
-      border-radius: 32px;
-      background: linear-gradient(135deg, rgba(122, 183, 255, 0.2), rgba(116, 240, 255, 0.16));
-      display: grid;
-      place-items: center;
-      position: relative;
-    }
-
-    .portrait {
-      width: 100%;
-      height: 100%;
-      border-radius: 28px;
-      background: url("https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80") center/cover;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
-      transition: transform var(--transition);
-      filter: saturate(0.94);
-    }
-
-    .portrait:hover { transform: scale(1.012); }
-
-    .hero-content { display: grid; gap: 12px; }
-
-    .eyebrow {
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    h1 { font-size: 34px; letter-spacing: -0.02em; }
-    .lead { color: var(--muted); max-width: 640px; line-height: 1.7; }
-
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip {
-      background: rgba(122, 183, 255, 0.15);
-      color: #dcedff;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      transition: transform var(--transition), border-color var(--transition);
-    }
-    .chip:hover { transform: translateY(-2px); border-color: rgba(122, 183, 255, 0.4); }
-
-    .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
-    .cta { font-weight: 600; }
-    .ghost { background: rgba(255, 255, 255, 0.03); color: var(--muted); }
-
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-top: 20px; }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--glow);
-      backdrop-filter: blur(var(--blur));
-      position: relative;
-      overflow: hidden;
-      transition: transform var(--transition), border-color var(--transition), background var(--transition);
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(122, 183, 255, 0.38);
-      background: rgba(23, 31, 56, 0.96);
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.05), transparent 46%);
-      opacity: 0;
-      transition: opacity var(--transition);
-      pointer-events: none;
-    }
-
-    .card:hover::before { opacity: 1; }
-
-    .card h2 { font-size: 18px; margin-bottom: 8px; letter-spacing: -0.01em; }
-    .muted { color: var(--muted); font-size: 14px; }
-
-    .list { display: grid; gap: 12px; margin-top: 14px; }
-    .item {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 12px;
-      align-items: start;
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      background: rgba(255, 255, 255, 0.02);
-      transition: border-color var(--transition), transform var(--transition);
-    }
-    .item:hover { border-color: rgba(122, 183, 255, 0.35); transform: translateY(-2px); }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: linear-gradient(145deg, var(--accent), var(--accent-2));
-      box-shadow: 0 0 0 6px rgba(122, 183, 255, 0.08);
-      margin-top: 4px;
-    }
-
-    .verse {
-      display: grid;
-      gap: 10px;
-      padding: 16px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(122, 183, 255, 0.08), rgba(12, 116, 255, 0.08));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .verse::after {
-      content: "";
-      position: absolute;
-      inset: -28% 62% auto -36%;
-      height: 260px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 50%);
-      transform: rotate(-6deg);
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
-    blockquote { font-size: 18px; line-height: 1.7; color: #eef3ff; }
-    .verse small { color: var(--muted); }
-
-    .contact { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .tag {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px dashed rgba(255, 255, 255, 0.14);
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.01em;
-    }
+    /* --------- Footer --------- */
 
     footer {
-      margin-top: 34px;
+      font-size: 12px;
+      color: var(--text-muted);
       text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    @media (max-width: 760px) {
-      .hero { grid-template-columns: 1fr; }
-      .portrait-wrap { justify-self: start; }
-      header { flex-direction: column; align-items: flex-start; }
+      padding: 18px 12px 8px;
     }
   </style>
 </head>
 <body>
-  <div class="floating-glow"></div>
   <div class="page">
-    <header>
-      <div>
-        <div class="mark">Jordan Lee — Product Strategist & Builder</div>
-        <div class="tags">
-          <span class="tag">Austin · CST</span>
-          <span class="tag">Reply-friendly</span>
-          <span class="tag">Operating with calm focus</span>
-        </div>
-      </div>
-      <nav>
-        <a class="pill" href="mailto:jordan@lee.studio">Email</a>
-        <a class="pill" href="https://cal.com" target="_blank" rel="noreferrer">Book a short intro</a>
-      </nav>
-    </header>
+    <div class="shell">
+      <header>
+        <div class="brand">David Abramchuk</div>
+        <nav class="nav">
+          <a href="#about">About</a>
+          <a href="#now">Now</a>
+          <a href="#verse">Verse</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
 
-    <section class="hero">
-      <div class="portrait-wrap">
-        <div class="portrait" aria-label="Portrait of Jordan Lee"></div>
-      </div>
-      <div class="hero-content">
-        <div class="eyebrow">Personal site</div>
-        <h1>Creating thoughtful products with quiet, precise execution.</h1>
-        <p class="lead">
-          I help teams ship intentional systems—lean processes, evidence-led choices, and experiences that stay human.
-          Outside work I invest in habits that keep me steady, curious, and anchored.
-        </p>
-        <div class="chips">
-          <span class="chip">Product thinking</span>
-          <span class="chip">Strategy & analytics</span>
-          <span class="chip">Habit design</span>
-          <span class="chip">Faith & service</span>
-        </div>
-        <div class="cta-row">
-          <a class="pill cta" href="https://cal.com" target="_blank" rel="noreferrer">Schedule an intro</a>
-          <a class="pill ghost" href="mailto:jordan@lee.studio">Send a note</a>
-        </div>
-      </div>
-    </section>
-
-    <div class="grid" style="margin-top: 20px;">
-      <article class="card">
-        <h2>Current Goals</h2>
-        <p class="muted">Quiet ambitions guiding my weeks.</p>
-        <div class="list">
-          <div class="item">
-            <span class="dot" aria-hidden="true"></span>
-            <div>
-              <strong>Lead with clarity</strong><br />
-              <span class="muted">Define crisp product bets, align teams early, and measure what matters.</span>
-            </div>
-          </div>
-          <div class="item">
-            <span class="dot" aria-hidden="true"></span>
-            <div>
-              <strong>Stay academically sharp</strong><br />
-              <span class="muted">Weekly study sprints in finance, decision science, and behavioral systems.</span>
-            </div>
-          </div>
-          <div class="item">
-            <span class="dot" aria-hidden="true"></span>
-            <div>
-              <strong>Build personal tools</strong><br />
-              <span class="muted">Automations and dashboards that protect attention and keep signals honest.</span>
-            </div>
-          </div>
-          <div class="item">
-            <span class="dot" aria-hidden="true"></span>
-            <div>
-              <strong>Invest in people</strong><br />
-              <span class="muted">Show up for family, church, and friends with time, presence, and encouragement.</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <h2>Anchored by Scripture</h2>
-        <p class="muted">A verse I keep close this month.</p>
-        <div class="verse">
-          <blockquote>
-            “You keep him in perfect peace whose mind is stayed on you, because he trusts in you.”
-          </blockquote>
-          <small>Isaiah 26:3 (ESV)</small>
-          <p class="muted">
-            A steady reminder to hold my focus on what’s eternal, not urgent. It keeps my work grounded and my days
-            unhurried.
+      <main>
+        <!-- Hero -->
+        <section class="hero" id="about">
+          <div class="eyebrow">Personal site</div>
+          <h1 class="hero-title">
+            Hi, I’m <span>David.</span>
+          </h1>
+          <p class="hero-subtitle">
+            I’m a business student who cares about clear thinking, disciplined work,
+            and building a life that’s grounded in something deeper than noise.
           </p>
-        </div>
-      </article>
+
+          <div class="hero-row">
+            <p class="hero-note">
+              This page is a simple snapshot of what I’m focused on right now:
+              what I’m learning, what I’m building quietly, and a verse that’s
+              shaping how I move through my days.
+            </p>
+            <div class="hero-pill">
+              <span class="hero-pill-dot"></span>
+              <span>Keeping my online footprint small on purpose</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Now -->
+        <section id="now">
+          <div class="section-title">Right now</div>
+          <div class="section-heading">What I’m working on & learning</div>
+          <div class="two-col">
+            <p class="muted">
+              I like understanding how decisions get made—especially in business,
+              finance, and day-to-day life. Right now I’m building a foundation:
+              learning the language of numbers, how organizations work, and how to
+              make choices that line up with what actually matters.
+            </p>
+            <div>
+              <div class="label">At the moment</div>
+              <ul class="clean-list">
+                <li>Studying business administration with a focus on accounting and analytics.</li>
+                <li>Exploring how technology and systems can remove friction from everyday life.</li>
+                <li>Paying attention to habits: how I use time, attention, and money.</li>
+                <li>Trying to grow in discipline, not just motivation.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Verse -->
+        <section class="verse-strip" id="verse">
+          <div class="section-title">Anchored by</div>
+          <div class="verse-ref">Matthew 6:34 (ESV)</div>
+          <p class="verse-text">
+            “Therefore do not be anxious about tomorrow, for tomorrow will be anxious
+            for itself. Sufficient for the day is its own trouble.”
+          </p>
+          <p class="verse-note">
+            This verse reminds me to stay present: do today’s work well, trust God
+            with what’s next, and stop trying to live in every possible future at once.
+          </p>
+        </section>
+
+        <!-- Principles -->
+        <section>
+          <div class="section-title">How I’m trying to live</div>
+          <div class="section-heading">A few principles I’m aiming for</div>
+          <div class="principles-grid">
+            <div class="principle">
+              <div class="principle-title">Clear over clever</div>
+              <div class="principle-text">
+                Fancy ideas don’t mean much if they aren’t understandable or useful.
+                I’d rather say something simple and true than impressive and vague.
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-title">Discipline over drama</div>
+              <div class="principle-text">
+                Real change usually comes from quiet, boring consistency—not big
+                moments. I’m learning to show up, even when it doesn’t feel exciting.
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-title">Faith over fear</div>
+              <div class="principle-text">
+                I don’t want anxiety to make my decisions. I want my choices to be
+                shaped by trust, wisdom, and the kind of peace that doesn’t depend
+                on circumstances.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Timeline / Growth -->
+        <section>
+          <div class="section-title">Recent years</div>
+          <div class="section-heading">A simple timeline of growth</div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-meta">2025 · Deepening</div>
+              <div class="timeline-heading">Studying business & analytics</div>
+              <div class="timeline-body">
+                Focusing on accounting, statistics, and how data connects to real-world
+                decisions—not just numbers on a page.
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-meta">2024 · Exploring</div>
+              <div class="timeline-heading">Systems, tech & personal finance</div>
+              <div class="timeline-body">
+                Experimenting with tools and workflows that make it easier to do the
+                right things consistently and avoid unnecessary chaos.
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-meta">Earlier · Foundations</div>
+              <div class="timeline-heading">Character, curiosity & faith</div>
+              <div class="timeline-body">
+                Learning to ask better questions, care about the people behind the
+                numbers, and build a life that isn’t centered on a feed.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact">
+          <div class="section-title">Contact</div>
+          <div class="section-heading">If you’d like to reach out</div>
+          <div class="contact-row">
+            <p>
+              I keep things pretty quiet online. If something here resonates and
+              you’d like to connect, email is the best way. I read everything, even
+              if I can’t always reply right away.
+            </p>
+            <a class="contact-chip" href="mailto:hello@abramchuk.net">
+              <span>hello@abramchuk.net</span>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        A small, quiet corner of the internet · © <span id="year"></span> David Abramchuk
+      </footer>
     </div>
-
-    <div class="grid" style="margin-top: 12px;">
-      <article class="card">
-        <h2>How I Work</h2>
-        <p class="muted">Disciplines that shape my craft.</p>
-        <div class="list">
-          <div class="item">
-            <span class="dot"></span>
-            <div>
-              <strong>Systems thinking</strong><br />
-              <span class="muted">Zooming out to find leverage, then zooming in to design calm, reliable flows.</span>
-            </div>
-          </div>
-          <div class="item">
-            <span class="dot"></span>
-            <div>
-              <strong>Writing-first</strong><br />
-              <span class="muted">Concise docs and decision logs keep teams aligned without meeting sprawl.</span>
-            </div>
-          </div>
-          <div class="item">
-            <span class="dot"></span>
-            <div>
-              <strong>Proof over polish</strong><br />
-              <span class="muted">Prototype, measure, and iterate quickly—then refine once the signal is clear.</span>
-            </div>
-          </div>
-          <div class="item">
-            <span class="dot"></span>
-            <div>
-              <strong>Presence first</strong><br />
-              <span class="muted">Protect margin for people and prayer so delivery stays anchored and sustainable.</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <h2>Contact</h2>
-        <p class="muted">I keep a low online footprint. Email is best.</p>
-        <div class="contact">
-          <a class="pill" href="mailto:jordan@lee.studio">jordan@lee.studio</a>
-          <a class="pill" href="https://cal.com" target="_blank" rel="noreferrer">Request a short intro call</a>
-          <span class="pill" aria-label="Location">Austin · CST</span>
-        </div>
-      </article>
-    </div>
-
-    <footer>
-      Crafted with care, low noise, and intentional defaults.
-    </footer>
   </div>
+
+  <script>
+    // tiny detail: keep year current automatically
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
